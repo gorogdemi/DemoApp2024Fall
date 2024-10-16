@@ -1,8 +1,15 @@
 using DemoApp2024Fall;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddSerilog(
+    options =>
+        options
+            .MinimumLevel.Information()
+            .WriteTo.Console()
+            .WriteTo.File("log.txt"));
 
 builder.Services.AddControllers();
 
@@ -10,7 +17,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddSingleton<IDemoService, DemoService>();
+builder.Services.AddSingleton<IPersonService, PersonService>();
 
 var app = builder.Build();
 
