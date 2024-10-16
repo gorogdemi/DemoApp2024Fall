@@ -10,7 +10,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddTransient<IDemoService, DemoService>();
+builder.Services.AddSingleton<IDemoService, DemoService>();
 
 var app = builder.Build();
 
@@ -29,6 +29,12 @@ app.MapControllers();
 
 app.Run();
 
-// TODO: Overview
 // TODO: DI: Singleton, Scoped, Transient
 // TODO: Exercise: counter endpoint
+// TODO: Cleanup
+// TODO: Person: Id, Name, Email, BirthDate
+// TODO: IPersonService + Implementation with List
+// TODO: PersonController: CRUD endpoints with exercise
+// TODO: Input validation: Required, MaxLength, Email, Range
+// TODO: Add log messages
+// TODO: Serilog: Serilog.AspNetCore 8.0.3
