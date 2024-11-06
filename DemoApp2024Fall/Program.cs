@@ -1,4 +1,6 @@
 using DemoApp2024Fall;
+using DemoApp2024Fall.Contexts;
+using Microsoft.EntityFrameworkCore;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -17,7 +19,13 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddSingleton<IPersonService, PersonService>();
+builder.Services.AddDbContext<DemoAppContext>(options =>
+{
+    options.UseSqlite(builder.Configuration.GetConnectionString("SQLite"));
+    options.UseLazyLoadingProxies();
+});
+
+builder.Services.AddScoped<IPersonService, PersonService>();
 
 var app = builder.Build();
 
@@ -35,13 +43,3 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
-
-// TODO: DI: Singleton, Scoped, Transient
-// TODO: Exercise: counter endpoint
-// TODO: Cleanup
-// TODO: Person: Id, Name, Email, BirthDate
-// TODO: IPersonService + Implementation with List
-// TODO: PersonController: CRUD endpoints with exercise
-// TODO: Input validation: Required, MaxLength, Email, Range
-// TODO: Add log messages
-// TODO: Serilog: Serilog.AspNetCore 8.0.3

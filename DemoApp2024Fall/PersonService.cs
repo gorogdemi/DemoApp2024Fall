@@ -1,43 +1,61 @@
+using DemoApp2024Fall.Contexts;
+using Microsoft.EntityFrameworkCore;
+
 namespace DemoApp2024Fall;
 
 public class PersonService : IPersonService
 {
-    private List<Person> _personList;
+    private DemoAppContext _context;
     private ILogger<PersonService> _logger;
 
-    public PersonService(ILogger<PersonService> logger)
+    public PersonService(ILogger<PersonService> logger, DemoAppContext context)
     {
-        _personList = [];
         _logger = logger;
+        _context = context;
     }
 
-    public void Add(Person person)
+    public async Task AddAsync(Person person)
     {
         _logger.LogInformation("Person to add: {@Person}", person);
-        _personList.Add(person);
+
+        await _context.AddAsync(person);
+        await _context.SaveChangesAsync();
     }
 
-    public void Delete(Guid id)
+    public async Task DeleteAsync(Guid id)
     {
-        _personList.RemoveAll(p => p.Id == id);
+        var person = await GetAsync(id);
+
+        if (person is null)
+        {
+            throw new KeyNotFoundException("Person not found");
+        }
+
+        _context.RemoveRange(person.Items);
+        _context.Remove(person);
+        await _context.SaveChangesAsync();
     }
 
-    public Person Get(Guid id)
+    public async Task<Person> GetAsync(Guid id)
     {
-        return _personList.Find(p => p.Id == id);
+        return await _context.FindAsync<Person>(id);
     }
 
-    public List<Person> GetAll()
+    public async Task<List<Person>> GetAllAsync()
     {
         _logger.LogInformation("All people retrieved");
-        return _personList;
+        return await _context.People.ToListAsync();
     }
 
-    public void Update(Person newPerson)
+    public async Task UpdateAsync(Person newPerson)
     {
-        var existingPerson = Get(newPerson.Id);
+        var existingPerson = await GetAsync(newPerson.Id);
+
         existingPerson.Name = newPerson.Name;
         existingPerson.Email = newPerson.Email;
         existingPerson.BirthDate = newPerson.BirthDate;
+        existingPerson.Items = newPerson.Items;
+        
+        await _context.SaveChangesAsync();
     }
 }

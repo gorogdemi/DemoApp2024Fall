@@ -2,13 +2,13 @@ namespace DemoApp2024Fall;
 
 public interface IPersonService
 {
-    void Add(Person person);
+    Task AddAsync(Person person);
 
-    void Delete(Guid id);
+    Task DeleteAsync(Guid id);
 
-    Person Get(Guid id);
+    Task<Person> GetAsync(Guid id);
 
-    List<Person> GetAll();
+    Task<List<Person>> GetAllAsync();
 
-    void Update(Person newPerson);
+    Task UpdateAsync(Person newPerson);
 }
