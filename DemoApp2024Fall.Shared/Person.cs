@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace DemoApp2024Fall;
+namespace DemoApp2024Fall.Shared;
 
 public class Person
 {

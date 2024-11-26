@@ -1,3 +1,5 @@
+using DemoApp2024Fall.Shared;
+
 namespace DemoApp2024Fall;
 
 public interface IPersonService

@@ -1,0 +1,25 @@
+@page "/people/add"
+@inject IPeopleService PeopleService
+@inject NavigationManager NavigationManager
+@using DemoApp2024Fall.Shared
+@using DemoApp2024Fall.UI.Services
+@using DemoApp2024Fall.UI.Components
+
+<h3>Add person</h3>
+
+<PersonForm Person="_person" OnValidSubmit="AddPersonAsync" ButtonText="Add" />
+
+@code {
+
+    private Person _person = new()
+    {
+        Items = [],
+    };
+
+    private async Task AddPersonAsync()
+    {
+        await PeopleService.AddAsync(_person);
+        NavigationManager.NavigateTo("people");
+    }
+
+}

@@ -1,0 +1,60 @@
+@page "/people/{id:guid}"
+@using DemoApp2024Fall.Shared
+@using DemoApp2024Fall.UI.Services
+@using DemoApp2024Fall.UI.Components
+@inject IPeopleService PeopleService
+@inject NavigationManager NavigationManager
+
+@if (_person is not null && !_errored)
+{
+    <h3>PersonDetails</h3>
+
+    <PersonForm Person="_person" OnValidSubmit="UpdateAsync" ButtonText="Update" />
+    
+    <button class="btn btn-danger form-control mt-3" @onclick="() => DeleteAsync()">Delete</button>
+}
+else if (_errored)
+{
+    <div class="alert alert-danger">
+        Person not found
+    </div>
+}
+else
+{
+    <p>Loading...</p>
+}
+
+
+@code {
+
+    private bool _errored = false;
+    private Person _person;
+    
+    [Parameter]
+    public Guid Id { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            _person = await PeopleService.GetAsync(Id);
+        }
+        catch (Exception)
+        {
+            _errored = true;
+        }
+    }
+
+    private async Task DeleteAsync()
+    {
+        await PeopleService.DeleteAsync(Id);
+        NavigationManager.NavigateTo("people");
+    }
+    
+    private async Task UpdateAsync()
+    {
+        await PeopleService.UpdateAsync(_person);
+        NavigationManager.NavigateTo("people");
+    }
+
+}

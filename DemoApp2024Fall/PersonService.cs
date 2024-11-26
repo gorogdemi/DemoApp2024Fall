@@ -1,4 +1,5 @@
 using DemoApp2024Fall.Contexts;
+using DemoApp2024Fall.Shared;
 using Microsoft.EntityFrameworkCore;
 
 namespace DemoApp2024Fall;

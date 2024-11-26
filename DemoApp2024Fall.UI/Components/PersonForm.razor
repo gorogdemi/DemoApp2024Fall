@@ -1,0 +1,37 @@
+@using DemoApp2024Fall.Shared
+<EditForm Model="Person" OnValidSubmit="() => OnValidSubmit()">
+    <DataAnnotationsValidator />
+
+    <div class="mb-3">
+        <label class="form-label">Name</label>
+        <InputText @bind-Value="Person.Name" class="form-control" />
+        <ValidationMessage For="() => Person.Name" />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Email</label>
+        <InputText @bind-Value="Person.Email" class="form-control" />
+        <ValidationMessage For="() => Person.Email" />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Birth date</label>
+        <InputDate @bind-Value="Person.BirthDate" class="form-control" />
+        <ValidationMessage For="() => Person.BirthDate" />
+    </div>
+
+    <button class="btn btn-primary form-control" type="submit">@ButtonText</button>
+</EditForm>
+
+@code {
+    
+    [Parameter]
+    public Person Person { get; set; }
+    
+    [Parameter]
+    public Func<Task> OnValidSubmit { get; set; }
+    
+    [Parameter]
+    public string ButtonText { get; set; }
+
+}
